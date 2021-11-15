@@ -2,6 +2,8 @@
 
 namespace Vox\Persistence\Stereotype;
 
+use Doctrine\Common\Annotations\Annotation\Required;
+
 /**
  * @Annotation
  * @Target({'CLASS'})
@@ -12,7 +14,7 @@ class Repository
 {
     /**
      * @var string
-     * @required
+     * @Required
      */
     public $entity;
 

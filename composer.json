@@ -1,6 +1,23 @@
 {
+    "name": "vox/persistence",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jhonatan Teixeira",
+            "email": "jhonatan.teixeira@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Vox\\Persistence\\": "src\\"
+        }
+    },
     "require": {
-        "vox/php-beans": "^1.0",
-        "twig/twig": "^3.3"
+        "vox/php-beans": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.3.0",
+        "phpspec/prophecy": "^1.13"
     }
 }

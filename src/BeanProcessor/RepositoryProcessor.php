@@ -1,14 +1,11 @@
 <?php
 
-
 namespace Vox\Persistence\BeanProcessor;
 
-
+use Laminas\Code\Generator\ClassGenerator;
 use Laminas\Code\Generator\MethodGenerator;
-use Laminas\Code\Generator\ParameterGenerator;
 use PhpBeans\Metadata\ClassMetadata;
 use PhpBeans\Processor\AbstractStereotypeProcessor;
-use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use Vox\Persistence\Stereotype\Repository;
 
 class RepositoryProcessor extends AbstractStereotypeProcessor
@@ -28,13 +25,26 @@ class RepositoryProcessor extends AbstractStereotypeProcessor
      */
     public function process($stereotype)
     {
-         if ($stereotype->getReflection()->isInterface()) {
-             $methods = [];
+        if ($stereotype->getReflection()->isInterface()) {
+            $methods = [];
 
-             foreach ($stereotype->methodMetadata as $methodMetadata) {
+            foreach ($stereotype->methodMetadata as $methodMetadata) {
                 $methods[] = $method = MethodGenerator::copyMethodSignature($methodMetadata->reflection);
                 $method->setBody("var_dump('here')");
-             }
-         }
+            }
+
+            $classGenerator = new ClassGenerator(
+                $className = $stereotype->name . 'Impl',
+                $stereotype->getReflection()->getNamespaceName(),
+                $stereotype->getReflection()->getParentClass()->name,
+                $stereotype->getReflection()->getInterfaceNames(),
+                [],
+                $methods,
+            );
+
+            eval($classGenerator->generate());
+
+            $this->getContainer()->set($stereotype->name, new $className());
+        }
     }
 }
